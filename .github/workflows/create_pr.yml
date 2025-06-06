@@ -18,16 +18,15 @@ jobs:
           Set-Content -Path "Version.txt" -Value "Current time: $time"
 
       - name: Commit and push changes
-        env:
-          GITHUB_TOKEN: ${{ secrets.PERS_TOKEN }}
+        shell: cmd
         run: |
-          git config user.name "Agent 007"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add Version.txt
-          git commit -m "Update version.txt via GitHub Actions"
-          git push origin HEAD:${{ github.ref_name }}
+          cd /d ${{github.workspace}}
+          git config --global user.name "Agent 007"
+          git add Version.txt && \
+          git commit -m "Update version.txt via GitHub Actions" &&\
+          git push 
 
-      - name: Commit and push changes
+      - name: PR
         env:
           GITHUB_TOKEN: ${{ secrets.PERS_TOKEN }}
         run: |
