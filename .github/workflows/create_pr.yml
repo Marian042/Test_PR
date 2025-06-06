@@ -27,9 +27,9 @@ jobs:
           $prBody = "This pull request was automatically created from branch $sourceBranch to $baseBranch."
           gh pr create `
           --title "$prTitle" `
-          --body "$prBody" `
-          --label "$lab" ` 
+          --body "$prBody" ` 
           --base "$baseBranch" `
           --head "$sourceBranch" `
+          --label "$lab" `
           --repo "$repo"
       
