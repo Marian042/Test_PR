@@ -27,7 +27,7 @@ jobs:
           git config --global user.email "agent007@example.com"
           git add Version.txt && 
           git commit -m "Update version.txt via GitHub Actions" &&
-          git remote set-url origin https://x-access-token:%GITHUB_TOKEN%@github.com/%GITHUB_REPOSITORY%.git
+          git remote set-url origin https://x-access-token:%GITHUB_TOKEN%@github.com/Marian042/Test_PR.git
           git push origin HEAD:%GITHUB_REF_NAME%
 
       - name: PR
