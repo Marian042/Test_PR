@@ -15,19 +15,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Git config
+      - name: Append text to version.txt
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          cd $env:GITHUB_WORKSPACE
+          echo "Appended text at $(date)" >> Version.txt
 
-      - name: Create PR using GitHub CLI
+      - name: Commit and push changes
         env:
-          GH_TOKEN: ${{ secrets.PERS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PERS_TOKEN }}
         run: |
-          $branchName = "${env:GITHUB_REF}".Replace("refs/heads/", "")
-          gh pr create `
-            --title "Auto PR from $branchName" `
-            --body "This PR was automatically created from a push to $branchName." `
-            --base main `
-            --head $branchName `
-            --repo "$env:GITHUB_REPOSITORY"
+          git config user.name "Agent 007"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add version.txt
+          git commit -m "Update version.txt via GitHub Actions"
+          git push origin HEAD:${GITHUB_REF_NAME}
+          ./test.ps1
+
+      
