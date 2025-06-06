@@ -15,10 +15,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Append text to version.txt
+      - name: Write current time to dir1/version.txt (PowerShell)
+        shell: powershell
         run: |
-          cd $env:GITHUB_WORKSPACE
-          echo "Appended text at $(date)" >> Version.txt
+          $time = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+          Set-Content -Path "dir1/version.txt" -Value "Current time: $time"
 
       - name: Commit and push changes
         env:
