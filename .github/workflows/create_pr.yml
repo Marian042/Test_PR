@@ -20,6 +20,7 @@ jobs:
           $repo = "Marian042/Test_PR"
           $sourceBranch = "main_sec"
           $baseBranch = "main"
+          $lab = "bug"
           git checkout $sourceBranch
           git push origin $sourceBranch
           $prTitle = "Auto PR GitHub Actions"
@@ -27,7 +28,7 @@ jobs:
           gh pr create `
           --title "$prTitle" `
           --body "$prBody" `
-          --labels "bug" ` 
+          --labels "%lab" ` 
           --base "$baseBranch" `
           --head "$sourceBranch" `
           --repo "$repo"
