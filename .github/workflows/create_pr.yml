@@ -1,0 +1,33 @@
+name: Create PR on Push 
+on:
+  push:
+    branches:
+      - 'feature/**'
+
+jobs:
+  create-pr:
+    runs-on: [self-hosted]
+    defaults:
+      run:
+        shell: pwsh
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Git config
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Create PR using GitHub CLI
+        env:
+          GH_TOKEN: ${{ secrets.PERS_TOKEN }}
+        run: |
+          $branchName = "${env:GITHUB_REF}".Replace("refs/heads/", "")
+          gh pr create `
+            --title "Auto PR from $branchName" `
+            --body "This PR was automatically created from a push to $branchName." `
+            --base main `
+            --head $branchName `
+            --repo "$env:GITHUB_REPOSITORY"
