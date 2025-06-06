@@ -2,7 +2,7 @@ name: Create PR on Push
 on:
   push:
     branches:
-      - 'feature/**'
+      - 'main_sec'
 
 jobs:
   create-pr:
