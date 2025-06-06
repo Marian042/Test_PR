@@ -7,27 +7,45 @@ on:
 jobs:
   create-pr:
     runs-on: [self-hosted]
-    defaults:
-      run:
-        shell: pwsh
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Git config
+      - name: Write current time to version.txt (PowerShell)
+        shell: powershell
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          $time = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+          Set-Content -Path "Version.txt" -Value "Current time: $time"
 
-      - name: Create PR using GitHub CLI
+      - name: Commit and push changes
+        shell: cmd
         env:
-          GH_TOKEN: ${{ secrets.PERS_TOKEN }}
+          MY_TOKEN: ${{ secrets.PERS_TOKEN }}
         run: |
-          $branchName = "${env:GITHUB_REF}".Replace("refs/heads/", "")
+          cd /d %GITHUB_WORKSPACE%
+          git config --global user.name "Agent 007"
+          git config --global user.email "agent007@example.com"
+          git add Version.txt 
+          git commit -m "Update version.txt via GitHub Actions" 
+          git remote set-url origin https://%MY_TOKEN%@github.com/Marian042/Test_PR.git
+          git push 
+
+      - name: PR
+        env:
+          GITHUB_TOKEN: ${{ secrets.PERS_TOKEN }}
+        run: |
+          $env:GH_TOKEN = $env:GITHUB_TOKEN
+          $repo = "Marian042/Test_PR"
+          $sourceBranch = "main_sec"
+          $baseBranch = "main"
+          git checkout $sourceBranch
+          git push origin $sourceBranch
+          $prTitle = "Auto PR GitHub Actions"
+          $prBody = "This pull request was automatically created from branch $sourceBranch to $baseBranch."
           gh pr create `
-            --title "Auto PR from $branchName" `
-            --body "This PR was automatically created from a push to $branchName." `
-            --base main `
-            --head $branchName `
-            --repo "$env:GITHUB_REPOSITORY"
+          --title "$prTitle" `
+          --body "$prBody" `
+          --base "$baseBranch" `
+          --head "$sourceBranch" `
+          --repo "$repo"
+      
