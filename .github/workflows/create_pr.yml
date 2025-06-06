@@ -11,24 +11,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Write current time to version.txt (PowerShell)
-        shell: powershell
-        run: |
-          $time = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-          Set-Content -Path "Version.txt" -Value "Current time: $time"
-
-      - name: Commit and push changes
-        shell: cmd
-        env:
-          MY_TOKEN: ${{ secrets.PERS_TOKEN }}
-        run: |
-          cd /d %GITHUB_WORKSPACE%
-          git config --global user.name "Agent 007"
-          git config --global user.email "agent007@example.com"
-          git add Version.txt 
-          git commit -m "Update version.txt via GitHub Actions" 
-          git remote set-url origin https://%MY_TOKEN%@github.com/Marian042/Test_PR.git
-          git push 
 
       - name: PR
         env:
