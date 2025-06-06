@@ -15,11 +15,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Write current time to dir1/version.txt (PowerShell)
+      - name: Write current time to version.txt (PowerShell)
         shell: powershell
         run: |
           $time = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-          Set-Content -Path "dir1/version.txt" -Value "Current time: $time"
+          Set-Content -Path "Version.txt" -Value "Current time: $time"
 
       - name: Commit and push changes
         env:
